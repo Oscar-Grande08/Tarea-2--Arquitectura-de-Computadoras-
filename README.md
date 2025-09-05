@@ -123,3 +123,16 @@ En el modelo de puertas las operaciones sobre qubits son unitarias, las compuert
   Compuertas de 2 qubits: CNOT cambia el segundo qubit si el primero es 1, este es fundamental para entrelazamiento
   
 Compuertas Universales: combinando Hadamard + CNOT + rotaciones. se puede construir cualquier operacion cuantica
+# Computacion Neuromorfica.
+Este es un sistema de computo cuya arquitectura y mecanismo de almacenamientos son diseñados explicitamente para emular el procesamiento nueronal y sinaptico del cerebro. Es un hardaware cuyo modelo dde operacion (paralelismo masivo,eventos discretos, memoria distribuida en la sinapsis y plasticidad local) replicando los principios biologicos para obetener eficiencia energetica y latencias bajas. Donde se busca diseñar un modelos neuronal de hardware, de modo que la computacion y la memoria no esten separados con el fin de evitar un cuello de botella.
+## Como Funciona?
+1. Modelos de neurona (dinamica temporal)**.Los chips neuromorficos suelen implementar modelos de neurona de diferente complejidad segun la aplicacion y el trade-off.
+-  Hodgkin- Huxley: Modelo biofisico detallado (canales ionicos). Ecuaciones diferenciales no lineales con variables gating m,h,n. Es costoso computacionalmente y rara vez implementado a escala en hardware por su complejidad.
+-  Izhihevich: Modelo compacto capaz de reproducir muchos patrones de disparo (bursts, chattering) con ecuaciones de segundo orden. Su condicion de disparo si v> 30mV entonces se usa cuando se busca riqueza dinamica de bajo coste.
+-  Leaky Integrate aand Fire: Este es el mas comun en hardware Si el voltaje suministrado alcanza un voltaje umbral emite speak y re resetea en Vreset y a menudo se aplica un periodo refractorio. fisicamente un condensador ingresa corriente sinaptica, una resistencia o transistor implementa la fuga, unn comparador detecta cuando el voltaje cruza el voltaje umbral y dispara una señal digital, tras lo cual un circuito de reset descarga el capacitor.
+
+
+2. Modelos De sinapsis y corriente sinaptica:
+- La entrada sinaptica es una suma de efectos causados por spikers sinapticos:
+
+
