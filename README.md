@@ -134,5 +134,74 @@ Este es un sistema de computo cuya arquitectura y mecanismo de almacenamientos s
 
 2. Modelos De sinapsis y corriente sinaptica:
 - La entrada sinaptica es una suma de efectos causados por spikers sinapticos:
+<img width="200" height="210" alt="Captura de pantalla 2025-09-05 060136" src="https://github.com/user-attachments/assets/ed5b81e5-55e4-4b69-8e9e-02051cc348a9" />
+ donde alpha es la forma de la respuesta sinaptica o una funcion alpha al infinito y wj son los pesos sinapticos que se almacenan en memoria local.
+
+3. Codigo De Informacion:
+-  Rate coding: La informacion se codifica en la tasa de disparo promedio. Facil de entender pero poco eficiente en latencia.
+-  Temporal Coding: La informacion codifica en tiempos relativos de los spikes lo cual termina siendo mas eficiente pero mas dificil de entrenar.
+-  Population Coding: Conjuntos de neuronas las cuales representan variables mediante patrones distribuidos.
+-  Event-Driven: El sistema computea solo cuando ocurren eventos lo que reduce consumo energetico en entornos esporadicos.
+
+4. Reglas De Plasticidad: Un rasgo distintivo de la neuromorfica es el aprendizaje local, las sinapsis actualizan su peso basdas en la actividad local. Las reglas moduladas por recompensa (STDP) multiplicada por un faactor de recompensa global, util para aprendizaje reforzado en hardware local.
+5. Arquitectura de ejecucion:
+- El evento se dirige al empaquetado de ahi parte al envio por red AER o equivalente, despues llega al core receptor y va a la lectura de pesos sinapticos y realiza el calculo de suma ponderada para luego actualizar la membrana y realizar el posible disparo.
+- El sistema es asincrono y orientado a eventos lo cual sucede cuando solo hay actividad de spikes, esto reduce consumo frente a ciclos de reloj constantes.
+6. Entrenamiento:
+- Off line training: Entrenar una red densa en GPU y convertir tasas a spikes, util cuando se prioriza precision.
+- Entrenamiento directo de SNN: con reglas locales o con surrogate gradients para aproximar el gradiente en presencia de la no diferenciabilidad del spike. Surrogate gradients permiten backprop tipo temporal usando aproximaciones suaves de la funcion de disparo.
+- On-chip Learning: Cambiar pesos directamente en hardware basado en actividad local lo cual es requerido para adaptibilidad online, robotica y sensores.
+## Ventajas:
+1. Eficiencia energetica real, el event-driven y sparse computation reducen consumo en tareas con baja tasa de eventos.
+2. Latencia ultra baja, tiene un procesamiento en el dominio temporal de los spikes permite respuestas en ms o menos (clave en control de tiempo real).
+3. Escalado para problemas paralelizables la topologia distribuida y local favorece paralelismo masivo.
+4. Robustez y tolerancia a fallos, la informacion distribuida permite degradacion graciosa.
+5. Procesamiento en memoria y sensor, en memresistors y DVS permiten colocar computo donde se genera la informacion
+## Desventajas: 
+1. Dificultad de entrenamiento y rendimiento inferior en algunas tareas: SNNs puras suelen requerir tecnicaas especiales o conversion de las ANNS para alcanzar la precision de redes convencionales.
+2. Variabilidad de dispositivos analogicos y memristivos en el que se deriva temporal, ruido y drift limitan reproducibilidad.
+3. Falta de estandares de programacion y toolchains maduras las cuales dificultan la adopcion industrial.
+4. Complejidad en diseño de comunicacion y congestion en AER para sistemas grandes.
+5. Compromiso y precision en energia, ya que lograr la misma precision que un ANN puede costar en latencia o consumo si se fuerza la equivalencia estricta.
+## Hardware: 
+1. Chips digitales orientados a eventos: Arrays digitales que implementan una logica de integracion y generacion de spikes e enteros o fixed point, memoria SRAM para pesos y routers digitales para spikes. son robustos y de mayor facilidad de diseño y sse integran bien con procesos CMOS estandar. este cuenta tambien con nucleos con filas de sinapsis indexadas cada spike desencadena lectura secuencial o acceso paralelo a bancos de pesos.
+2. Chips analogicos y mixed-signal: circuitos neuronales en circuito analogico  los cuales se ven en transistores trabajando en subthreshold para emular exponencial I-V y consumir pW-nW por neurona. Para la sinapsis implementadas como elementos analogicos son los capcitores y resistores programables, algo contradictorio es la sensibilidad al ruido, temperatura o procesos.
+3. In- Memory computing con crossbar memristivo (RRAM,PCM,WRAM variantes) En los cuales se almacena conductancias en celdas memristivas ubicadas en la interseccion filasxcolumnas. Al aplicar voltajes en filas y la corriente en columna realiza una operacion de producto-suma de forma fisica y paralela. Para representar pesos negativos se usan dos dispositivos diferenciales por sinapsis.
+4. Comunicaciones y Routing: AER es el estandar operativo de facto para muchos chips cada spike se representa como un paquete con la direccion de neurona emisora. los routers AER son asincronos y permiten multicast per itiendo dirigirse a multiples destinos.
+5. Memorias y dispositvos no volatiles en neuromorficos: SRAM/DRAM usados en chips digitales para pesos y estados temporales rapidos, per voluminosos y consumidores de energia. MRAM ReRAM, PCM (memristivos) permiten almacenar pesos de manera no volatil, densidad alta y posibilidad de in-memory compute. Ideal para edge con bajo consumo standby.
+6. Fotonica Neuromorfica: La luz permite operaciones con ancho de banda enorme y latencias muy bajas. Implementado en moduladores y resonadores donde realizan implementos de pesos y sumas opticas que se convierten a dominio electrico.
+7. Plataformas y ejemplos de arquitectura: Spinnaker (digital masivo): millones de nucleos ARM diseñados para simular grandes redes spiking mediante software distribuido, en enfasis de escalabilidad y flexibilidad.
+8. true North: nucleos neuromorficos que integran memoria local de pesos, logica de neuron spiking y routers AER lo que añade capacidades de aprendizaje local on-chip.
+## Tipos de computacion neuromorfica que existen.
+1. Paradigma operativo: usan spikes discretos en tiempo; event-driven; priorizan latencia y eficiencia temporal. chips que aceleran redes profundas tradicionales (convolucionales, transformers) usando formatos low-precision o in-memory. Pueden llamarse “neuromorficos” por su inspiración en co-diseño, pero en práctica operan con activaciones continuas.combinan sensores DVS (Dynamic Vision Sensors) con procesadores neuromorficos. Aquí el flujo es completamente asíncrono desde el sensor hasta la inferencia.
+   
+2. Tecnologia de implementacion: Implementaciones puramente digitales orientadas a eventos, integra dinamica neuronal en circuitos analogicos las cuales cuentan con routing y control digital. los Crossbar arrays analogicos para pesos y MAC fisicos y con procesamiento de luz.
+  
+3. Modo de aprendizaje: capacidades de plasticidad local implementadas en el hardware lo cual es vital paara sistemas autonomos o roboticos. constante entrenamiento en GPU Y CPU  para mapear pesos a hardware neuromorfico para inferencia eficiente, con actualizacion periodica de pesos locales con correcciones offline 
+4. Escala y arquitectura de red: miles o millones de nucleos pequeños CPUs para simular SNNs. con un enfoque en densidad sinapticas y dot-product paralelo para redes con gran gan-in.
+   
+5. Area de aplicacion: en campos como vision, robotica, edge. En Edge son sensores siempre en on, con reconocimiento activado por eventos y bajo consumo. En robotica cuenta con control reactivo con latencia minima. y en Sistemas biomedicos cuenta con implantes o interfaces neuronales donde eficiencia y latencia son criticas.
+
+## Ordenadores Biologicos.
+Es un sistema de procesamiento de informacion que utiliza componentes vivos o biomoleculares como ADN, ARN, proteinas, celulas o tejidos) para realizar operaciones logicas, amtematicas, o de almacenamiento de datos. En lugar de usar transistores y silicio, emplea procesos biologicos naturales como la replicacion, transcripcion o traduccion las interacciones anzimaticas y redes metabolicas para procesar informacion. Sus caracteristicas principales son el encuentro se substrato vivo el cual funciona a partir de material genetico o celular, con un paralelismo masico de millones de moleculas las cuales pueden interactuar simultaneamente con un ambiente molecular en el cual se realizan los calculos en soluciones quimicas o entornos celulares y en un proposito interdisciplinar donde se combina biologia sintetica, bioquimica, ingenieria de sistemas, nanotecnologia y ciencias de la computacion. 
+
+la diferencia con neuromorfico o cuantico es que el neuromorfico imita al cerebro con silicio, el cuantico aprovecha fenomenos de la mecanica cuantica y el biologico usa directamente la biologia como hardware.
+
+## Tipos Ordenadores Biologicos 
+1. Computacion basada en ADN: el cual usa moleculas de ADN como soporte para codificar informacion, donde el ADN almacena la informacion en secuencias de nucleotidos (A,T,C,G)
+y puede procesarse mediante hibridacion, enzimas y reacciones quimicas, donde es altamente paralelo y billones de moleculas pueden realizar calculos en un tubo de ensayo al mismo tiempo y asi poder resolver problemas de combinatoria, criptografia, almacenamiento de datos.
+
+2. Computacion Celular: Se emplean celulas vivas como bacterias, levaduras o celulas humanas modificadas geneticamente, cada celula puede funcionar como una unidad de procesamiento que responde a estimulos quimicos o luminicos y prodcue una salida como proteina, fluorescencia o metabolito. Esta se basa en redes reguladoreas de genes sinteticos, que actuan como compuertas logicas biologicas (AND, OT, NOT).
+3. Computacion basada en proteinas y enzimas: Utiliza enzimas o proteinas que actuan como catalizadores pra procesar la informacion, como reacciones enzimaticas que realizan sumas,restas o clasificacion molecular con alta velocidad quimica y precision molecular.
+4. Computacion hibrida: Intebgra sistemas biologicos con dispostivos electronicos como interfaces de ADN o proteinas con transistores y biosensores, creando biochips que combinan lo mejor de ambos mundos, lo cual lo hace ser un campo emergente con gran potencial en bioinformaticas, medicina personalizada y bio-robotica.
+
+## Principales hitos de los ordenadores Biologicos.
+- 1994: Es cuando Leonard Adleman resolvio un problema del camino hamiltoniano(NP-completo) utilizando moleculas de ADN en un tubo de ensayo.
+- 1997: Richard Lipton y otros demostraron como implementar operaciones logicas con cadenas de ADN, abriendo la puerta a la logica booleana molecular.
+- 2002: James J Collins y su equipo diseñaron un cricuito genetico sintetico que actuaba como un oscilador dentro de bacterias, marcando el nacimiento de la biologia sintetica como soporte de computacion.
+- 2004: Ehud Shapiro y su equipo crearon un sistema de ADN y enzimas capaz de funcionar como un automata finito, procesando entrada y produciendo salidas moleculares, el sistema funcionaba con precision en medio liquido.
+- 2010: Computacion celular programable con el auge d eCRISPR y la edicion genetica, se lograron celulas vivas programadas para detectar señales y responder con proteinas fluorescentes.
+- 2017: Almacenamiento masivo de datos en ADN donde microsoft y la universidad de Washington codificaron 200 MB de datos digitales en moleculas de ADN, demostrando un almacenamiento ultradenso donde 1g de ADN puede guardar hasta 215 petabytes.
+- 2020 en adelante: Bioordenadores hibridos y biomemoria, donde se encuentra la investigacion en memristores biologicos, proteinas como elemnetos logicos y biochips hibridos que conectan ADN con electronica. Tambien hitos reciente sincluyen la creacion de tejidos neuronales en chips para pruebas de farmacos y procesamiento sensorial. 
 
 
