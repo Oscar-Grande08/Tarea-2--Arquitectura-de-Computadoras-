@@ -230,5 +230,12 @@ Este aprovecha las fortalezas especoficas de cada tipo de procesador:
 - 2010-presente: "Ecosistemas heterogeneos integrados". La ley de Moore desacelera y obliga a buscar paralelismo y especializacion, A su vez google desarrolla TPus en 2015 para aprendizaje profundo, mientras intel y AMD integran Apus (CPUs + GPU en un mismo chip). Arquitecturas HPC como exascale computing se basan casi siempre en heterogenidad y actualmente frameworks como SYCL o ROCm buscan portabilidad y eficiencia en sistemas heterogeneos.
 
 ## Ventajas Computacion Heterogenea.
-- 
+- **Maximo rendimiento por tarea** en donde cada procesador se dedica a lo que mejor hace, donde la CPU controla la logica y la GPU entrena redes neuronales y la FPGA acelera criptografia.
+- **Eficiencia Energetica** Ya que un acelerador especializado como un ASIC puede ser entre 10 y 100 veces mas eficiente que una CPU para la misma tarea.
+- **Escalabilidad y Flexibilidad** Permite escalar sistemas hacia aplicaciones muy diversas, desde HPC hasta Iot.
+- **Versatibilidad en Aplicaciones** Usada en simulaciones cientificas, inteligencia artificial, procesamiento de imagenes, Big Data, criptografia cuantica post-cuantica, etc.
+- **Supercomputacion Moderna** Todos los superordenadores top del ranking TOP500 como frontier, Aurora, Fugaku son heterogeneos porque ya no es viable escalar solo con CPUs.
+
+## Desventajas.
+-
 
