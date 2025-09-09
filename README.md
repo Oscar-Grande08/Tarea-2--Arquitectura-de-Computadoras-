@@ -204,4 +204,31 @@ y puede procesarse mediante hibridacion, enzimas y reacciones quimicas, donde es
 - 2017: Almacenamiento masivo de datos en ADN donde microsoft y la universidad de Washington codificaron 200 MB de datos digitales en moleculas de ADN, demostrando un almacenamiento ultradenso donde 1g de ADN puede guardar hasta 215 petabytes.
 - 2020 en adelante: Bioordenadores hibridos y biomemoria, donde se encuentra la investigacion en memristores biologicos, proteinas como elemnetos logicos y biochips hibridos que conectan ADN con electronica. Tambien hitos reciente sincluyen la creacion de tejidos neuronales en chips para pruebas de farmacos y procesamiento sensorial. 
 
+# Computacion Heterogenea.
+La computacion heterogenea es una paradigma arquitectonico que combina diferentes tipos de unidades de procesamiento (CPU,GPU,FPGA,TPU,ASIC, entre otros) estos van dentro de un mismo sistema para ejecutar aplicaciones de manera mas eficiente que con una arquitectura homogenea basada unicamente en CPU. Esta arquitectura no busca reemplazar un tipo de procesador con otro, si no integrarlos en un ecosistema donde cada unidad resuelva la parte de un problema que mejor se ajuste a sus capacidades.
+Siendo un sistema de computo Hibrido con multiples instrucciones de arquitectura conocidas como: Instruction set Architectures (ISAs), gestionado por software como compiladores, runtimes, APIs, OpenCL, SYCL o ROCm que orquestan la ejecucion en los distintos dispositivos 
+Este aprovecha las fortalezas especoficas de cada tipo de procesador:
+
+-CPU: "Central Processing Unit". El es flexible, secuencial, optimizada para tareas de control, operaciones generales y flujo de programa.
+
+-GPU: "Graphics Processing Unit" Masivamente paralela orientada a calculos numericos repetitivos y procesamiento vectorial o matricial.
+
+-FPGA:"Field Proggrammable Gate Array". Reconfigurable y de muy baja latecnias y eficiente energeticamente para algortimos especificos.
+
+-TPU:"Tensor Processing Unit". Procesador especializado en operaciones de aprendizaje automatico,
+
+## Historia Computacion Heterogenea.
+
+- 1960-1980: Ya en los supercomputadores vectoriales, se empieza a explorar la idea de aceleradores especializados para mejorar el rendimiento de operaciones matematicas pero sin embargo la integraccion con CPUs aun era limitada asi que coexistian, pero no existia una arquitectura de software unificada.
+
+- 1990: "GPUs como coprocesadores graficos". Las GPUs comenzaron como dispositivos dedicados al renderizado grafico. Estas no estaban pensadas para computo general, pero su naturaleza paralela atrajo la atencion de investigadores.
+
+- 2000-2006: "GPGPU General purpose compiuting on GPUs". Investigadores empezaron a usar Gpus para computo cientifico antes de existir CUDA los cuales se programabn con shaders graficos. Ya en 2006 Nvidia lanza CUDA, marcando un antes y un despues al permitir programar GPUs en C/C++ para tareas generales.
+
+- 2007-2010: "Consolidacion" Aparece OpenCL (Khronos Group), un estandar abierto para programacion en multiples dispositivos heterogeneos, donde AMD y NVIDIA lideran el campo.
+
+- 2010-presente: "Ecosistemas heterogeneos integrados". La ley de Moore desacelera y obliga a buscar paralelismo y especializacion, A su vez google desarrolla TPus en 2015 para aprendizaje profundo, mientras intel y AMD integran Apus (CPUs + GPU en un mismo chip). Arquitecturas HPC como exascale computing se basan casi siempre en heterogenidad y actualmente frameworks como SYCL o ROCm buscan portabilidad y eficiencia en sistemas heterogeneos.
+
+## Ventajas Computacion Heterogenea.
+- 
 
